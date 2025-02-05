@@ -1,0 +1,9 @@
+*.o
+*.cache_exists
+*.a
+
+
+test_maps
+fdf
+school_fdf
+
