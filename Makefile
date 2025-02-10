@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+         #
+#    By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/04 15:05:03 by stdevis           #+#    #+#              #
-#    Updated: 2025/02/04 18:38:38 by stdevis          ###   ########.fr        #
+#    Updated: 2025/02/06 15:01:37 by shokahn          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,17 @@ UNDERLINE = \033[4m
 ITALIC = \033[3m
 
 NAME = fdf
+NAME_TEST = fdf_test
 OBJ_DIR = obj/
 SRC_DIR = src/
+OBJ_TEST_DIR = test/obj/
+SRC_TEST_DIR = test/
 
 SRC = main.c
+TEST = main.C
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
+OBJ_TEST = $(addprefix $(OBJ_TEST_DIR), $(TEST:%.C=%.o))
 
 CFLAGS = -Wall -Wextra -Werror
 MiniLibX_Flags = -lXext -lX11
@@ -49,6 +54,11 @@ all: $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c 
 	@mkdir -p $(OBJ_DIR)
+	@echo "📦 $(ITALIC)$(YELLOW)Compiling $< $(RESET)"
+	@cc $(CFLAGS) -c $< -o $@
+
+$(OBJ_TEST_DIR)%.o: $(SRC_TEST_DIR)%.c 
+	@mkdir -p $(OBJ_TEST_DIR)
 	@echo "📦 $(ITALIC)$(YELLOW)Compiling $< $(RESET)"
 	@cc $(CFLAGS) -c $< -o $@
 
@@ -90,6 +100,16 @@ $(PRINTF):
 	@$(MAKE) -C $(PRINTF_DIR)
 	@echo ""
 
+test: $(NAME_TEST) 
+
+$(NAME_TEST): $(LIBFT) $(PRINTF) $(GNL) $(MINI_LIBX) $(OBJ_TEST)
+	@echo ""
+	@echo "		🚀 $(BOLD)$(YELLOW)Linking $(NAME_TEST)...$(RESET)"
+	@cc $(CFLAGS) $(OBJ_TEST) -o $(NAME_TEST) $(All_L) $(All_l) $(MiniLibX_Flags)
+	@echo ""
+	@echo "	🎉 $(BOLD)$(GREEN)SUCCESS: $(NAME_TEST) has been created$(RESET) ✅ "
+	@echo ""
+
 clean:
 	@echo ""
 	@echo "		🧹 $(BOLD)$(BLUE)Cleaning object files 🧹$(RESET)"
@@ -99,6 +119,7 @@ clean:
 	@$(MAKE) -C $(GNL_DIR) clean
 	@$(MAKE) -C $(Mini_Libx_DIR) clean
 	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_TEST_DIR)
 	@echo "💾 $(YELLOW)Cleaning $(NAME) object files$(RESET)"
 	@echo "   ↪️ $(GREEN)$(NAME) object files have been deleted$(RESET)"
 	@echo ""
@@ -115,6 +136,7 @@ fclean: clean
 	@echo "💾 $(YELLOW)Cleaning $(NAME)$(RESET)"
 	@echo "   ↪️ $(GREEN)$(NAME) has been deleted$(RESET)"
 	@rm -f $(NAME)
+	@rm -f $(NAME_TEST)
 	@echo ""
 	@echo "	👉 $(BOLD)$(GREEN)Everything has been cleaned$(RESET) ❎"
 

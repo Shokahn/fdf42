@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/04 19:03:32 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/06 17:00:35 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,23 @@
 # include <string.h>
 # include <unistd.h>
 
-typedef struct s_mlx
+# define HEIGHT 500
+# define WIDTH 600
+
+typedef struct s_map
+{
+	int		height;
+	int		width;
+	int		***array;
+	int		z_max;
+	int		z_min;
+}			t_map;
+
+typedef struct s_fdf
 {
 	int		i;
 	void	*win;
 	void	*mlx;
-}			t_mlx;
+}			t_fdf;
 
 #endif
