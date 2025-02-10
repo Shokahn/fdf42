@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/06 17:00:35 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/02/10 18:44:24 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,24 @@ typedef struct s_fdf
 	int		i;
 	void	*win;
 	void	*mlx;
+    t_map   *map;
 }			t_fdf;
+
+
+// initialization
+
+void    initialization(t_fdf **var);
+
+// free
+
+void    free_fdf(t_fdf *var);
+void    free_map(t_map *map);
+
+// error
+
+void ft_free_error(char *error, int check, t_fdf *var);
+void ft_error(char *error);
+void ft_perror(char *error);
+
 
 #endif

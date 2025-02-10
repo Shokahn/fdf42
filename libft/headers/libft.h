@@ -6,21 +6,20 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 13:08:19 by stdevis           #+#    #+#             */
-/*   Updated: 2025/01/20 12:54:57 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/10 15:29:14 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include "color.h"
+# include "utils.h"
 # include <stdarg.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-
-# define MAX_INT 2147483647
-# define MIN_INT -2147483648
 
 int					ft_isalpha(int c);
 size_t				ft_strlen(const char *s);
