@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:13:15 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/06 15:23:28 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/02/10 13:44:16 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/fdf.h"
 
-void initialization(t_mlxdata **var)
+void initialization(t_fdf **var)
 {
-    *var = malloc(sizeof(t_mlxdata));
+    *var = malloc(sizeof(t_fdf));
     if (!(*var))
         return;
     (*var)->mlx = 0;
@@ -22,7 +22,7 @@ void initialization(t_mlxdata **var)
     (*var)->i = 0;
 }
 
-int closer(int keysyms, t_mlxdata *var)
+int closer(int keysyms, t_fdf *var)
 {
     if (keysyms == XK_Escape)
     {
@@ -42,7 +42,7 @@ int closer(int keysyms, t_mlxdata *var)
 
 int main()
 {
-    t_mlxdata *var;
+    t_fdf *var;
     
     initialization(&var);
     if (!var)
