@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 14:43:41 by stdevis           #+#    #+#             */
-/*   Updated: 2025/01/21 17:23:06 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/11 18:53:28 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ long	ft_atoi(const char *str)
 	}
 	return (sign * result);
 }
-/*int main()
+/* int main()
 {
-	printf("%d \n", ft_atoi(" 			-1234ab567"));
-	printf("%d \n", ft_atoi(" 			-a34ab567"));
-	printf("%d \n", ft_atoi("+1234ab567"));
+	printf("%ld \n", ft_atoi(" 			-1234ab567"));
+	printf("%ld \n", ft_atoi("lkdfjlkdfj"));
+	printf("%ld \n", ft_atoi("+1234ab567"));
 
 	printf("%d \n", atoi(" 			-1234ab567"));
-	printf("%d \n", atoi(" 			-a34ab567"));
+	printf("%d \n", atoi("ldkfjlgfjlkf"));
 	printf("%d \n", atoi("+1234ab567"));
-}*/
+} */

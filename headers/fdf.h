@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/10 18:44:24 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/11 19:17:58 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,21 @@
 # include <string.h>
 # include <unistd.h>
 
-# define HEIGHT 500
-# define WIDTH 600
+# define HEIGHT 800
+# define WIDTH 1000
+
+typedef struct s_coord
+{
+	int		x;
+	int		y;
+	int		z;
+}			t_coord;
 
 typedef struct s_map
 {
 	int		height;
 	int		width;
-	int		***array;
+	t_coord	**coord;
 	int		z_max;
 	int		z_min;
 }			t_map;
@@ -42,24 +49,25 @@ typedef struct s_fdf
 	int		i;
 	void	*win;
 	void	*mlx;
-    t_map   *map;
+	t_map	*map;
 }			t_fdf;
-
 
 // initialization
 
-void    initialization(t_fdf **var);
+void		initialization(t_fdf **var);
+t_coord		**coord_init(int height, int width, t_fdf *var);
+t_map		*map_init(void);
 
 // free
 
-void    free_fdf(t_fdf *var);
-void    free_map(t_map *map);
+void		free_fdf(t_fdf *var);
+void		free_map(t_map *map);
+void		free_struct_index(t_coord **coord, int j);
 
 // error
 
-void ft_free_error(char *error, int check, t_fdf *var);
-void ft_error(char *error);
-void ft_perror(char *error);
-
+void		ft_error(char *error);
+void		ft_perror(char *error);
+void		ft_free_error(char *error, int check, t_fdf *var);
 
 #endif

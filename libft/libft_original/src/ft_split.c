@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 15:07:35 by stdevis           #+#    #+#             */
-/*   Updated: 2025/01/21 13:48:14 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/11 19:01:56 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,6 @@ static char	*ft_wcreate(int start, int end, const char *str)
 	return (word);
 }
 
-static void	*ft_free(char **split, int j)
-{
-	int	i;
-
-	i = 0;
-	while (i < j)
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-	return (NULL);
-}
-
 static char	**ft_makesplit(char **split, const char *s, char c)
 {
 	int	i;
@@ -85,7 +71,10 @@ static char	**ft_makesplit(char **split, const char *s, char c)
 		{
 			split[j] = ft_wcreate(start, i, s);
 			if (!split[j++])
-				return (ft_free(split, j - 1));
+			{
+				ft_free_index(split, j - 1);
+				return (NULL);
+			}
 		}
 	}
 	split[j] = NULL;
@@ -108,7 +97,7 @@ char	**ft_split(char const *s, char c)
 	return (split);
 }
 
-/*int	main(void)
+/* int	main(void)
 {
 	int i;
 	char **split;
@@ -124,4 +113,4 @@ char	**ft_split(char const *s, char c)
 		i++;
 	}
 	free(split);
-}*/
+} */
