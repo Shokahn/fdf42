@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/11 19:17:58 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/17 14:26:46 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@
 # include <string.h>
 # include <unistd.h>
 
-# define HEIGHT 800
-# define WIDTH 1000
+# define TEST ft_printf(BOLD GREEN"TEST\n"RESET)
 
 typedef struct s_coord
 {
@@ -44,12 +43,24 @@ typedef struct s_map
 	int		z_min;
 }			t_map;
 
+typedef struct s_image
+{
+	void	*img_p;
+	char	*addr;
+	int		bpp;
+	int		line_lenght;
+	int		endian;
+}			t_image;
+
 typedef struct s_fdf
 {
 	int		i;
-	void	*win;
-	void	*mlx;
+	void	*win_p;
+	void	*mlx_p;
+	int		running;
+	int		color;
 	t_map	*map;
+	t_image	*img;
 }			t_fdf;
 
 // initialization
@@ -58,16 +69,25 @@ void		initialization(t_fdf **var);
 t_coord		**coord_init(int height, int width, t_fdf *var);
 t_map		*map_init(void);
 
+// parsing
+
+void		map_read(t_fdf *var, char *map_name);
 // free
 
 void		free_fdf(t_fdf *var);
 void		free_map(t_map *map);
-void		free_struct_index(t_coord **coord, int j);
+void		free_coord_index(t_coord **coord, int j);
+void		free_coord(t_coord **coord);
 
 // error
 
 void		ft_error(char *error);
 void		ft_perror(char *error);
 void		ft_free_error(char *error, int check, t_fdf *var);
+
+// print
+
+void		print_mapcoord(t_map *map);
+void		print_tab(char **nbr);
 
 #endif

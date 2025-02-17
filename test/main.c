@@ -6,13 +6,13 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:13:15 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/11 16:11:27 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/13 11:25:58 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/fdf.h"
 
-/*void	initialization(t_fdf **var)
+void	initialization(t_fdf **var)
 {
 	*var = malloc(sizeof(t_fdf));
 	if (!(*var))
@@ -100,4 +100,4 @@ int	main(void)
 	free(var->mlx);
 	free(var);
 	return (0);
-} */
+}

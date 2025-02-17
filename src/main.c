@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:13:15 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/11 19:31:42 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/17 15:15:11 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	closer(int keysyms, t_fdf *var)
 	{
 		ft_printf("the %d key (ESC) has been pressed\n\n", keysyms);
 		ft_printf("end of the programme\n\n");
-		mlx_destroy_window(var->mlx, var->win);
-		mlx_destroy_display(var->mlx);
-		free(var->mlx);
+		mlx_destroy_window(var->mlx_p, var->win_p);
+		mlx_destroy_display(var->mlx_p);
+		free(var->mlx_p);
 		free(var);
 		exit(0);
 	}
@@ -30,115 +30,60 @@ int	closer(int keysyms, t_fdf *var)
 	return (0);
 }
 
-void	wind_init(t_fdf *var)
+void	wind_init(t_fdf *var, int height, int width)
 {
 	if (!var)
 		exit(1);
-	var->mlx = mlx_init();
-	if (!var->mlx)
+	var->mlx_p = mlx_init();
+	if (!var->mlx_p)
 	{
 		free(var);
 		exit(1);
 	}
-	var->win = mlx_new_window(var->mlx, WIDTH, HEIGHT, "Void square");
-	if (!var->win)
+	var->win_p = mlx_new_window(var->mlx_p, width * 15, height * 15, "fdf");
+	if (!var->win_p)
 	{
-		mlx_destroy_display(var->mlx);
-		free(var->mlx);
+		mlx_destroy_display(var->mlx_p);
+		free(var->mlx_p);
 		free(var);
 		exit(1);
 	}
-	mlx_key_hook(var->win, closer, var);
-	mlx_loop(var->mlx);
+	var->img->img_p = mlx_new_image(var->mlx_p, width * 10, height * 10);
 }
 
 void	wind_destruction(t_fdf *var)
 {
-	mlx_destroy_window(var->mlx, var->win);
-	mlx_destroy_display(var->mlx);
-	free(var->mlx);
+    mlx_destroy_image(var->mlx_p, var->img->img_p);
+	mlx_destroy_window(var->mlx_p, var->win_p);
+	mlx_destroy_display(var->mlx_p);
+	free(var->mlx_p);
 	free(var);
 }
 
-int	calculate_width(char *line)
+void	put_pixel(t_fdf *var, int x, int y, int color)
 {
-	char	**nbr;
-	int		width;
-
-	width = 0;
-	nbr = ft_split(line, ' ');
-	if (!nbr)
-		return (0);
-	while (nbr[width])
-		width++;
-	ft_free_tab(nbr);
-	return (width);
+	int	index;
+    int i;
+    
+    i = 0;
+    while(i < 5000)
+    {
+        if (x + i < 0 || x + i >= var->map->width * 100 || y < 0)
+            return ;
+        index = (y * var->img->line_lenght) + ((x + i) * (var->img->bpp / 8));
+	    *(unsigned int *)(var->img->addr + index) = color;
+        i++;
+    }
 }
-
-void	find_height_width(t_fdf *var, int fd)
+void	resolve_image(t_fdf *var)
 {
-	char	*line;
-
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (line == NULL)
-			break ;
-		if (var->map->height == 0)
-			var->map->width = calculate_width(line);
-		if (var->map->width == 0)
-			ft_free_error("split for width failed\n", 0, var);
-		var->map->height++;
-		free(line);
-	}
-	close(fd);
-}
-
-void	fill_the_coord(char **nbr, t_map *map, int y)
-{
-	int	x;
-
-	x = 0;
-	while (nbr[x] && x < map->width)
-	{
-		map->coord[y][x].z = ft_atoi(nbr[x]);
-		x++;
-	}
-}
-
-void	open_to_fill(int fd, t_fdf *var)
-{
-	int		y;
-	char	*line;
-	char	**nbr;
-
-	y = 0;
-	while (y < var->map->height)
-	{
-		line = get_next_line(fd);
-		nbr = ft_split(line, ' ');
-		if (!nbr)
-			ft_free_error("split for coord failed\n", 0, var);
-		fill_the_coord(nbr, var->map, y);
-		ft_free_tab(nbr);
-        y++;
-	}
-}
-
-void	map_read(t_fdf *var, char *map_name)
-{
-	int	fd;
-
-	fd = open(map_name, O_RDONLY);
-	if (fd == -1)
-		ft_free_error("map open failed\n", 1, var);
-	find_height_width(var, fd);
-   	fd = open(map_name, O_RDONLY);
-	if (fd == -1)
-		ft_free_error("map open failed\n", 1, var);
-	var->map->coord = coord_init(var->map->height, var->map->width, var);
-	open_to_fill(fd, var);
-    close(fd);
+	var->img->addr = mlx_get_data_addr(var->img->img_p, &var->img->bpp,
+			&var->img->line_lenght, &var->img->endian);
+	put_pixel(var, 1, 1, 0xFFFFFF);
+	mlx_put_image_to_window(var->mlx_p, var->win_p, var->img->img_p,
+		var->map->width * 10, var->map->height * 10);
+	mlx_key_hook(var->win_p, closer, var);
+	mlx_loop(var->mlx_p);
 }
 
 int	main(int ac, char **av)
@@ -149,10 +94,16 @@ int	main(int ac, char **av)
 	{
 		initialization(&var);
 		map_read(var, av[1]);
-		// wind_init(var);
-		// wind_destruction(var);
+		print_mapcoord(var->map);
+		wind_init(var, (var->map->height * 10), (var->map->width * 10));
+		resolve_image(var);
+		wind_destruction(var);
 	}
-	ft_putstr_fd(BOLD RED "Error : numbers of arguments\n" RESET, 2);
-	ft_putstr_fd(ITALIC "Usage: ./fdf \"map.fdf\"\n" RESET, 1);
+	else
+	{
+		ft_putstr_fd(BOLD RED "Error : numbers of arguments\n" RESET, 2);
+		ft_putstr_fd(ITALIC "Usage: ./fdf \"map.fdf\"\n" RESET, 1);
+		return (1);
+	}
 	return (0);
 }
