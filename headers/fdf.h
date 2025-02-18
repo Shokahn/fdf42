@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/17 14:26:46 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/18 15:59:06 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,14 @@
 # include <string.h>
 # include <unistd.h>
 
-# define TEST ft_printf(BOLD GREEN"TEST\n"RESET)
+# define HEIGHT 1500
+# define WIGHT 1800
+# define DISTANCE 5
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
+# define TEST ft_printf(BOLD GREEN "TEST\n" RESET)
+# define TEST2 ft_printf(BOLD RED "TEST\n" RESET)
 
 typedef struct s_coord
 {

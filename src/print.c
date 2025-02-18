@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:08:05 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/13 13:56:44 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/18 15:56:35 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ void	print_mapcoord(t_map *map)
 
 void	print_tab(char **nbr)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while(nbr[i])
-    {
-        ft_printf("%s\n", nbr[i]);
-        i++;
-    }
+	i = 0;
+	while (nbr[i])
+	{
+		ft_printf("%s\n", nbr[i]);
+		i++;
+	}
 }

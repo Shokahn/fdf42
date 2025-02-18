@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:48:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/17 14:04:27 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/18 15:56:38 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,19 @@ t_map	*map_init(void)
 	return (map);
 }
 
-t_image   *img_init()
+t_image	*img_init(void)
 {
-    t_image *img;
-    
-    img = malloc(sizeof(t_image));
-    if (!img)
-        return (NULL);
-    img->addr = NULL;
-    img->bpp = 0;
-    img->endian = 0;
-    img->img_p = NULL;
-    img->line_lenght = 0;
-    return (img);
+	t_image	*img;
+
+	img = malloc(sizeof(t_image));
+	if (!img)
+		return (NULL);
+	img->addr = NULL;
+	img->bpp = 0;
+	img->endian = 0;
+	img->img_p = NULL;
+	img->line_lenght = 0;
+	return (img);
 }
 
 void	initialization(t_fdf **var)
@@ -78,14 +78,14 @@ void	initialization(t_fdf **var)
 	*var = malloc(sizeof(t_fdf));
 	if (!(*var))
 		return ;
-    (*var)->mlx_p = 0;
-    (*var)->win_p = 0;
-    (*var)->i = 0;
-    (*var)->color = 0x00FF0000;
-    (*var)->map = map_init();
-    (*var)->img = img_init();
+	(*var)->mlx_p = 0;
+	(*var)->win_p = 0;
+	(*var)->i = 0;
+	(*var)->color = 0x00FF0000;
+	(*var)->map = map_init();
+	(*var)->img = img_init();
 	if (!(*var)->map)
 		ft_free_error("initialization of the map failed\n", 0, *var);
-    if (!(*var)->img)
-        ft_free_error("initialization of the img failed\n", 0, *var);
+	if (!(*var)->img)
+		ft_free_error("initialization of the img failed\n", 0, *var);
 }

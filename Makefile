@@ -6,7 +6,7 @@
 #    By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/04 15:05:03 by stdevis           #+#    #+#              #
-#    Updated: 2025/02/13 15:36:33 by stdevis          ###   ########.fr        #
+#    Updated: 2025/02/17 16:31:59 by stdevis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,9 +33,9 @@ TEST = main.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 OBJ_TEST = $(addprefix $(OBJ_TEST_DIR), $(TEST:%.c=%.o))
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 MiniLibX_Flags = -lXext -lX11
-FSANITIZE = -fsanitize=address -g3
+FSANITIZE = -fsanitize=address
 MAKE = make --no-print-directory
 
 LIBFT_DIR = libft/libft_original

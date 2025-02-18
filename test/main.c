@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:13:15 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/13 11:25:58 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/18 15:15:36 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	main(void)
 		free(var);
 		return (1);
 	}
-	var->win = mlx_new_window(var->mlx, 600, 500, "Void square");
+	var->win = mlx_new_window(var->mlx, WIGHT, HEIGHT, "Void square");
 	if (!var->win)
 	{
 		mlx_destroy_display(var->mlx);
