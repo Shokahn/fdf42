@@ -6,7 +6,7 @@
 #    By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/04 15:05:03 by stdevis           #+#    #+#              #
-#    Updated: 2025/02/17 16:31:59 by stdevis          ###   ########.fr        #
+#    Updated: 2025/02/22 13:04:07 by stdevis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRC_DIR = src/
 OBJ_TEST_DIR = test/obj/
 SRC_TEST_DIR = test/
 
-SRC = error.c free.c initialization.c main.c print.c parsing.c
+SRC = error.c free.c initialization.c main.c print.c parsing.c translate.c
 TEST = main.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
@@ -43,7 +43,7 @@ PRINTF_DIR = libft/Printf
 GNL_DIR = libft/GNL
 Mini_Libx_DIR = minilibx-linux/
 All_L = -L $(LIBFT_DIR) -L $(PRINTF_DIR) -L $(GNL_DIR) -L $(Mini_Libx_DIR)
-All_l = -lft -lftprintf -l:GNL.a -lmlx_Linux
+All_l = -lft -lftprintf -l:GNL.a -lmlx_Linux -lm
 
 LIBFT = $(LIBFT_DIR)/libft.a
 PRINTF = $(PRINTF_DIR)/libftprintf.a

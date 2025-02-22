@@ -6,27 +6,46 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:13:15 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/18 16:15:57 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/22 17:08:05 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/fdf.h"
 
-int	closer(int keysyms, t_fdf *var)
+void	clear_image(t_fdf *var)
 {
-	if (keysyms == XK_Escape)
-	{
-		ft_printf("the %d key (ESC) has been pressed\n\n", keysyms);
-		ft_printf("end of the programme\n\n");
-		mlx_destroy_image(var->mlx_p, var->img->img_p);
-		mlx_destroy_window(var->mlx_p, var->win_p);
-		mlx_destroy_display(var->mlx_p);
-		free(var->mlx_p);
-		free(var);
-		exit(0);
-	}
+	int	img_size;
+
+	img_size = HEIGHT * WIGHT * 4;
+	ft_memset(var->img->addr, 0, img_size);
+}
+
+void	closer(t_fdf *var, int keycode)
+{
+	ft_printf("the %d key (ESC) has been pressed\n\n", keycode);
+	ft_printf("end of the programme\n\n");
+	mlx_destroy_image(var->mlx_p, var->img->img_p);
+	mlx_destroy_window(var->mlx_p, var->win_p);
+	mlx_destroy_display(var->mlx_p);
+	free(var->mlx_p);
+	free(var);
+	exit(0);
+}
+
+int	key_hook(int keycode, t_fdf *var)
+{
+	if (keycode == XK_Escape)
+		closer(var, keycode);
+	if (keycode == UP_ARROW)
+		going_up(var);
+	if (keycode == DOWN_ARROW)
+		going_down(var);
+	if (keycode == LEFT_ARROW)
+		going_left(var);
+	if (keycode == RIGHT_ARROW)
+		going_right(var);
 	var->i++;
-	ft_printf("the %d key has been pressed\n\n", keysyms);
+	ft_printf("the %d key has been pressed\n\n", keycode);
 	ft_printf("Key numbers pressed %d\n\n", var->i);
 	return (0);
 }
@@ -59,16 +78,27 @@ void	wind_destruction(t_fdf *var)
 	free_fdf(var);
 }
 
-void	put_pixel(t_fdf *var, int x, int y, int color)
+void	put_pixel(t_image *img, int x, int y, t_map *map)
 {
+    (void)map;
 	int	index;
-
-	if (x < 0 || x > WIGHT || y < 0 || y > HEIGHT)
+	int	x_sized;
+	int	y_sized;
+	x_sized = x + (WIGHT / 2);
+	y_sized = y + (HEIGHT / 4);
+    
+    if (img->x == 0 && img->y == 0)
 	{
-		return ;
+		if (x_sized <= 0 || x_sized >= WIGHT || y_sized <= 0
+			|| y_sized >= HEIGHT)
+			return ;
 	}
-	index = (y * var->img->line_lenght) + (x * (var->img->bpp / 8));
-	*(unsigned int *)(var->img->addr + index) = color;
+	if (x_sized + img->x <= 0 || x_sized + img->x >= WIGHT || y_sized
+		+ img->y <= 0 || y_sized + img->y >= HEIGHT)
+		return ;
+	index = (((y_sized + img->y) * img->line_lenght)) + (((x_sized + img->x)
+				* (img->bpp / 8)));
+	*(unsigned int *)(img->addr + index) = map->coord[y / img->distance][x / img->distance].color;
 }
 
 void	isometric_transform(int *x, int *y, int z)
@@ -82,29 +112,185 @@ void	isometric_transform(int *x, int *y, int z)
 	*y = (old_x + old_y) * sin(M_PI / 6) - z; // sin(30°) - z
 }
 
+void	draw_lineH(int dx, int dy, t_map *map, t_image *img, t_coord *tmp)
+{
+	int	p;
+	int	i;
+	int	step_x;
+	int	step_y;
+
+	step_x = 1;
+	step_y = 1;
+	if (dx < 0)
+		step_x = -1;
+	if (dy < 0)
+		step_y = -1;
+	p = 2 * abs(dy) - abs(dx);
+	i = 0;
+	while (i <= abs(dx))
+	{
+		put_pixel(img, tmp->y, tmp->x, map);
+		tmp->x += step_x;
+		if (p >= 0)
+		{
+			tmp->y += step_y;
+			p -= 2 * abs(dx);
+		}
+		p += 2 * abs(dy);
+		i++;
+	}
+}
+
+void	draw_lineV(int dx, int dy, t_map *map, t_image *img, t_coord *tmp)
+{
+	int	p;
+	int	i;
+	int	step_x;
+	int	step_y;
+
+	step_x = 1;
+	step_y = 1;
+	if (dx < 0)
+		step_x = -1;
+	if (dy < 0)
+		step_y = -1;
+	p = 2 * abs(dx) - abs(dy);
+	i = 0;
+	while (i <= abs(dy))
+	{
+		put_pixel(img, tmp->x, tmp->y, map);
+		tmp->y += step_y;
+		if (p >= 0)
+		{
+			tmp->x += step_x;
+			p -= 2 * abs(dy);
+		}
+		p += 2 * abs(dx);
+		i++;
+	}
+}
+
+void	draw_line(t_image *img, t_map *map,t_coord *next)
+{
+	int	dx;
+	int	dy;
+    t_coord *tmp = point_init(map->x_d, map->y_d, map->z_d);
+
+	dx = next->x - map->x_d;
+	dy = next->y - map->y_d;
+	if (abs(dx) > abs(dy))
+	{
+/*         printf("%d\n", dx);
+        printf("%d\n", dy);
+        printf("next : x = %d y = %d z = %d\n", next->x, next->y, next->z);
+        printf("origin/tmp : x = %d y = %d z = %d\n\n", tmp->x, tmp->y, tmp->z); */
+        draw_lineH(dx, dy, map, img, tmp);
+    }
+	else
+		draw_lineV(dx, dy, map, img, tmp);
+    free(tmp);
+}
+
+void	make_the_map(t_fdf *var, t_map *map, int x, int y)
+{
+	t_coord	*next;
+	t_coord	*origin;
+
+	next = point_init(0, 0, 0);
+	origin = point_init(0, 0, 0);
+	if (x == 0 && y == 0)
+		map->coord[y][x].color = 0xFF0000;
+	origin->x = map->x_d;
+	origin->y = map->y_d;
+	origin->z = map->z_d;
+	//isometric_transform(&map->x_d, &map->y_d, map->z_d);
+	put_pixel(var->img, map->x_d, map->y_d, map);
+	if (x < map->width - 1)
+	{
+		next->x = (origin->x + var->img->distance);
+		next->y = origin->y;
+		next->z = map->coord[y][x + 1].z * var->img->distance;
+		//isometric_transform(&next->x, &next->z, next->z);
+		ft_printf(GREEN "x = %d / x_d = %d / x_next = %d\n" RESET,
+			map->coord[y][x].x, map->x_d, next->x);
+		ft_printf(YELLOW "y = %d / y_d = %d / y_next = %d\n" RESET,
+			map->coord[y][x].y, map->y_d, next->y);
+		ft_printf(BLUE "z = %d / z_d = %d / z_next = %d\n" RESET,
+			map->coord[y][x].z, map->z_d, next->z);
+        ft_printf("color = %d\n\n", map->coord[y][x].color);
+		draw_line(var->img, map, next);
+	}
+	 if (y < map->height - 1)
+		{
+		    next->x = origin->x;
+		    next->y = origin->y + var->img->distance;
+		    next->z = map->coord[y + 1][x].z * var->img->distance;
+		//isometric_transform(&next->x, &next->z, next->z);
+			draw_line(var->img, map, next);
+		}
+	free(next);
+	free(origin);
+}
+
 void	put_the_grid(t_fdf *var, t_map *map)
 {
-	int	i;
-	int	j;
 	int	x;
 	int	y;
-	int	z;
 
-	j = 0;
-	while (j < map->height)
+	y = 0;
+	while (y < map->height)
 	{
-		i = 0;
-		while (i < map->width)
+		x = 0;
+		while (x < map->width)
 		{
-			x = i * DISTANCE;
-			y = j * DISTANCE;
-			z = map->coord[j][i].z * DISTANCE;
-			isometric_transform(&x, &y, z);
-			put_pixel(var, x + (WIGHT / 2), y + (HEIGHT / 4), 0xFF00FF);
-			i++;
+			map->x_d = x * var->img->distance;
+			map->y_d = y * var->img->distance;
+			map->z_d = map->coord[y][x].z * var->img->distance;
+			make_the_map(var, map, x, y);
+			x++;
 		}
-		j++;
+		y++;
 	}
+}
+
+void	zoom_in(t_fdf *var)
+{
+	int	zoom;
+
+	zoom = 2;
+	clear_image(var);
+	var->img->distance += zoom;
+	put_the_grid(var, var->map);
+	mlx_put_image_to_window(var->mlx_p, var->win_p, var->img->img_p, 0, 0);
+	ft_printf("Zoomed in for %d pixels\n", zoom);
+}
+
+void	zoom_out(t_fdf *var)
+{
+	int	zoom;
+
+	zoom = 2;
+	if (var->img->distance - zoom > 0)
+	{
+		clear_image(var);
+		var->img->distance -= zoom;
+		put_the_grid(var, var->map);
+		mlx_put_image_to_window(var->mlx_p, var->win_p, var->img->img_p, 0, 0);
+		ft_printf("Zoomed out for %d pixels\n", zoom);
+	}
+	else
+		ft_printf("Maximum size of dezoom reached\n");
+}
+
+int	mouse_hook(int keycode, int x, int y, t_fdf *var)
+{
+	(void)x;
+	(void)y;
+	if (keycode == 4)
+		zoom_in(var);
+	if (keycode == 5)
+		zoom_out(var);
+	return (0);
 }
 
 void	resolve_image(t_fdf *var)
@@ -113,7 +299,8 @@ void	resolve_image(t_fdf *var)
 			&var->img->line_lenght, &var->img->endian);
 	put_the_grid(var, var->map);
 	mlx_put_image_to_window(var->mlx_p, var->win_p, var->img->img_p, 0, 0);
-	mlx_key_hook(var->win_p, closer, var);
+	mlx_key_hook(var->win_p, key_hook, var);
+	mlx_mouse_hook(var->win_p, mouse_hook, var);
 	mlx_loop(var->mlx_p);
 }
 
@@ -125,7 +312,7 @@ int	main(int ac, char **av)
 	{
 		initialization(&var);
 		map_read(var, av[1]);
-		print_mapcoord(var->map);
+		// print_mapcoord(var->map);
 		wind_init(var);
 		resolve_image(var);
 		wind_destruction(var);

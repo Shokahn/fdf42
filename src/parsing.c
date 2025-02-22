@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:35:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/17 14:21:57 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/22 16:52:51 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	open_to_fill(int fd, t_fdf *var)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		ft_printf("%s\n", line);
 		nbr = ft_split(line, ' ');
 		if (!nbr)
 			ft_free_error("split for coord2 failed\n", 0, var);

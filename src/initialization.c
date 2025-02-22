@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:48:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/18 15:56:38 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/22 16:54:12 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_coord	**coord_init(int height, int width, t_fdf *var)
 			coord[y][x].x = x;
 			coord[y][x].y = y;
 			coord[y][x].z = 0;
+			coord[y][x].color = COLOR;
 			x++;
 		}
 		y++;
@@ -53,8 +54,9 @@ t_map	*map_init(void)
 	map->height = 0;
 	map->width = 0;
 	map->coord = NULL;
-	map->z_max = 0;
-	map->z_min = 0;
+	map->x_d = 0;
+	map->y_d = 0;
+	map->z_d = 0;
 	return (map);
 }
 
@@ -70,6 +72,9 @@ t_image	*img_init(void)
 	img->endian = 0;
 	img->img_p = NULL;
 	img->line_lenght = 0;
+	img->distance = DISTANCE;
+	img->x = 0;
+	img->y = 1;
 	return (img);
 }
 
@@ -81,11 +86,24 @@ void	initialization(t_fdf **var)
 	(*var)->mlx_p = 0;
 	(*var)->win_p = 0;
 	(*var)->i = 0;
-	(*var)->color = 0x00FF0000;
 	(*var)->map = map_init();
 	(*var)->img = img_init();
 	if (!(*var)->map)
 		ft_free_error("initialization of the map failed\n", 0, *var);
 	if (!(*var)->img)
 		ft_free_error("initialization of the img failed\n", 0, *var);
+}
+
+t_coord	*point_init(int x, int y, int z)
+{
+	t_coord *point;
+
+	point = malloc(sizeof(t_coord));
+	if (!point)
+		return (NULL);
+	point->x = x;
+	point->y = y;
+	point->z = z;
+	point->color = COLOR;
+	return (point);
 }
