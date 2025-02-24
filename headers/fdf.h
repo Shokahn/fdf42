@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/22 16:26:31 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/24 13:43:35 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@
 # include <string.h>
 # include <unistd.h>
 
-# define HEIGHT 1500
-# define WIGHT 1800
-# define DISTANCE 20
+# define HEIGHT 800
+# define WIGHT 1000
+# define DISTANCE 5
 # define DEPLACEMENT 20
+# define ZOOM 2
 # define UP_ARROW 65362
 # define DOWN_ARROW 65364
 # define LEFT_ARROW 65361
@@ -84,7 +85,7 @@ typedef struct s_fdf
 void		initialization(t_fdf **var);
 t_coord		**coord_init(int height, int width, t_fdf *var);
 t_map		*map_init(void);
-t_coord		*point_init(int x, int y, int z);
+t_coord		*point_init(int x, int y, int z, int color);
 
 // parsing
 

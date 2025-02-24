@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:48:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/22 16:54:12 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:03:49 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	initialization(t_fdf **var)
 		ft_free_error("initialization of the img failed\n", 0, *var);
 }
 
-t_coord	*point_init(int x, int y, int z)
+t_coord	*point_init(int x, int y, int z, int color)
 {
 	t_coord *point;
 
@@ -104,6 +104,6 @@ t_coord	*point_init(int x, int y, int z)
 	point->x = x;
 	point->y = y;
 	point->z = z;
-	point->color = COLOR;
+	point->color = color;
 	return (point);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:13:15 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/22 17:08:05 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/24 13:44:08 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ void	wind_destruction(t_fdf *var)
 	free_fdf(var);
 }
 
-void	put_pixel(t_image *img, int x, int y, t_map *map)
+void	put_pixel(t_image *img, int x_d, int y_d, t_map *map, int x, int y)
 {
     (void)map;
 	int	index;
 	int	x_sized;
 	int	y_sized;
-	x_sized = x + (WIGHT / 2);
-	y_sized = y + (HEIGHT / 4);
+	x_sized = x_d + (WIGHT / 2);
+	y_sized = y_d + (HEIGHT / 4);
     
     if (img->x == 0 && img->y == 0)
 	{
@@ -98,7 +98,7 @@ void	put_pixel(t_image *img, int x, int y, t_map *map)
 		return ;
 	index = (((y_sized + img->y) * img->line_lenght)) + (((x_sized + img->x)
 				* (img->bpp / 8)));
-	*(unsigned int *)(img->addr + index) = map->coord[y / img->distance][x / img->distance].color;
+	*(unsigned int *)(img->addr + index) = map->coord[y][x].color;
 }
 
 void	isometric_transform(int *x, int *y, int z)
@@ -112,7 +112,7 @@ void	isometric_transform(int *x, int *y, int z)
 	*y = (old_x + old_y) * sin(M_PI / 6) - z; // sin(30°) - z
 }
 
-void	draw_lineH(int dx, int dy, t_map *map, t_image *img, t_coord *tmp)
+void	draw_lineH(int dx, int dy, t_map *map, t_image *img, t_coord *tmp, int x, int y)
 {
 	int	p;
 	int	i;
@@ -129,7 +129,7 @@ void	draw_lineH(int dx, int dy, t_map *map, t_image *img, t_coord *tmp)
 	i = 0;
 	while (i <= abs(dx))
 	{
-		put_pixel(img, tmp->y, tmp->x, map);
+		put_pixel(img, tmp->x, tmp->y, map, x, y);
 		tmp->x += step_x;
 		if (p >= 0)
 		{
@@ -141,7 +141,7 @@ void	draw_lineH(int dx, int dy, t_map *map, t_image *img, t_coord *tmp)
 	}
 }
 
-void	draw_lineV(int dx, int dy, t_map *map, t_image *img, t_coord *tmp)
+void	draw_lineV(int dx, int dy, t_map *map, t_image *img, t_coord *tmp, int x, int y)
 {
 	int	p;
 	int	i;
@@ -158,7 +158,7 @@ void	draw_lineV(int dx, int dy, t_map *map, t_image *img, t_coord *tmp)
 	i = 0;
 	while (i <= abs(dy))
 	{
-		put_pixel(img, tmp->x, tmp->y, map);
+		put_pixel(img, tmp->x, tmp->y, map, x, y);
 		tmp->y += step_y;
 		if (p >= 0)
 		{
@@ -170,66 +170,50 @@ void	draw_lineV(int dx, int dy, t_map *map, t_image *img, t_coord *tmp)
 	}
 }
 
-void	draw_line(t_image *img, t_map *map,t_coord *next)
+void	draw_line(t_image *img, t_map *map,t_coord *next, int x, int y)
 {
 	int	dx;
 	int	dy;
-    t_coord *tmp = point_init(map->x_d, map->y_d, map->z_d);
+    t_coord *tmp = point_init(map->x_d, map->y_d, map->z_d, COLOR);
 
 	dx = next->x - map->x_d;
 	dy = next->y - map->y_d;
 	if (abs(dx) > abs(dy))
-	{
-/*         printf("%d\n", dx);
-        printf("%d\n", dy);
-        printf("next : x = %d y = %d z = %d\n", next->x, next->y, next->z);
-        printf("origin/tmp : x = %d y = %d z = %d\n\n", tmp->x, tmp->y, tmp->z); */
-        draw_lineH(dx, dy, map, img, tmp);
-    }
+        draw_lineH(dx, dy, map, img, tmp, x, y);
 	else
-		draw_lineV(dx, dy, map, img, tmp);
+		draw_lineV(dx, dy, map, img, tmp, x, y);
     free(tmp);
 }
 
 void	make_the_map(t_fdf *var, t_map *map, int x, int y)
 {
 	t_coord	*next;
-	t_coord	*origin;
+	t_coord	*tmp;
 
-	next = point_init(0, 0, 0);
-	origin = point_init(0, 0, 0);
+	next = point_init(0, 0, 0, COLOR);
+	tmp = point_init(map->x_d, map->y_d, map->z_d, COLOR);
 	if (x == 0 && y == 0)
 		map->coord[y][x].color = 0xFF0000;
-	origin->x = map->x_d;
-	origin->y = map->y_d;
-	origin->z = map->z_d;
-	//isometric_transform(&map->x_d, &map->y_d, map->z_d);
-	put_pixel(var->img, map->x_d, map->y_d, map);
+	isometric_transform(&map->x_d, &map->y_d, map->z_d);
+	put_pixel(var->img, map->x_d, map->y_d, map, x, y);
 	if (x < map->width - 1)
 	{
-		next->x = (origin->x + var->img->distance);
-		next->y = origin->y;
+		next->x = tmp->x + var->img->distance;
+		next->y = tmp->y;
 		next->z = map->coord[y][x + 1].z * var->img->distance;
-		//isometric_transform(&next->x, &next->z, next->z);
-		ft_printf(GREEN "x = %d / x_d = %d / x_next = %d\n" RESET,
-			map->coord[y][x].x, map->x_d, next->x);
-		ft_printf(YELLOW "y = %d / y_d = %d / y_next = %d\n" RESET,
-			map->coord[y][x].y, map->y_d, next->y);
-		ft_printf(BLUE "z = %d / z_d = %d / z_next = %d\n" RESET,
-			map->coord[y][x].z, map->z_d, next->z);
-        ft_printf("color = %d\n\n", map->coord[y][x].color);
-		draw_line(var->img, map, next);
+		isometric_transform(&next->x, &next->y, next->z);
+		draw_line(var->img, map, next, x, y);
 	}
 	 if (y < map->height - 1)
 		{
-		    next->x = origin->x;
-		    next->y = origin->y + var->img->distance;
+		    next->x = tmp->x;
+		    next->y = tmp->y + var->img->distance;
 		    next->z = map->coord[y + 1][x].z * var->img->distance;
-		//isometric_transform(&next->x, &next->z, next->z);
-			draw_line(var->img, map, next);
+			isometric_transform(&next->x, &next->y, next->z);
+			draw_line(var->img, map, next, x, y);
 		}
 	free(next);
-	free(origin);
+	free(tmp);
 }
 
 void	put_the_grid(t_fdf *var, t_map *map)
@@ -255,28 +239,23 @@ void	put_the_grid(t_fdf *var, t_map *map)
 
 void	zoom_in(t_fdf *var)
 {
-	int	zoom;
-
-	zoom = 2;
 	clear_image(var);
-	var->img->distance += zoom;
+	var->img->distance += ZOOM;
 	put_the_grid(var, var->map);
 	mlx_put_image_to_window(var->mlx_p, var->win_p, var->img->img_p, 0, 0);
-	ft_printf("Zoomed in for %d pixels\n", zoom);
+	ft_printf("Zoomed in for %d pixels\n", ZOOM);
 }
 
 void	zoom_out(t_fdf *var)
 {
-	int	zoom;
 
-	zoom = 2;
-	if (var->img->distance - zoom > 0)
+	if (var->img->distance - ZOOM > 0)
 	{
 		clear_image(var);
-		var->img->distance -= zoom;
+		var->img->distance -= ZOOM;
 		put_the_grid(var, var->map);
 		mlx_put_image_to_window(var->mlx_p, var->win_p, var->img->img_p, 0, 0);
-		ft_printf("Zoomed out for %d pixels\n", zoom);
+		ft_printf("Zoomed out for %d pixels\n", ZOOM);
 	}
 	else
 		ft_printf("Maximum size of dezoom reached\n");
