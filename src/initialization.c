@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:48:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/24 12:03:49 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/02/26 19:04:53 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,10 @@ t_map	*map_init(void)
 	map->x_d = 0;
 	map->y_d = 0;
 	map->z_d = 0;
+    map->x_index = 0;
+    map->y_index = 0;
+    map->p = 0;
+    map->radius = RADIUS_Z;
 	return (map);
 }
 
@@ -74,7 +78,7 @@ t_image	*img_init(void)
 	img->line_lenght = 0;
 	img->distance = DISTANCE;
 	img->x = 0;
-	img->y = 1;
+	img->y = 0;
 	return (img);
 }
 

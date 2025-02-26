@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/24 13:43:35 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/02/26 19:05:07 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,13 @@
 # include <string.h>
 # include <unistd.h>
 
-# define HEIGHT 800
-# define WIGHT 1000
+# define HEIGHT 1800
+# define WIGHT 1500
+# define RADIUS_Z 0.8
+# define RADIUS_SCALE 0.02
 # define DISTANCE 5
 # define DEPLACEMENT 20
 # define ZOOM 2
-# define UP_ARROW 65362
-# define DOWN_ARROW 65364
-# define LEFT_ARROW 65361
-# define RIGHT_ARROW 65363
 # define COLOR 0x33ff99
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -43,9 +41,9 @@
 
 typedef struct s_coord
 {
-	int		x;
-	int		y;
-	int		z;
+	float	x;
+	float	y;
+	float	z;
 	int		color;
 }			t_coord;
 
@@ -53,27 +51,31 @@ typedef struct s_map
 {
 	int		height;
 	int		width;
+	int		p;
 	t_coord	**coord;
-	int		x_d;
-	int		y_d;
-	int		z_d;
+	float	x_d;
+	float	y_d;
+	float	z_d;
+	float	radius;
+	int		x_index;
+	int		y_index;
 }			t_map;
 
 typedef struct s_image
 {
-	int		distance;
+	float	distance;
 	void	*img_p;
 	char	*addr;
 	int		bpp;
 	int		line_lenght;
 	int		endian;
-	int		x;
+	int x; // deplacement
 	int		y;
 }			t_image;
 
 typedef struct s_fdf
 {
-    int     i;
+	int		i;
 	void	*win_p;
 	void	*mlx_p;
 	t_map	*map;

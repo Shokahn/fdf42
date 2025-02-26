@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:35:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/22 16:52:51 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/26 15:52:42 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	calculate_width(char *line)
 	while (nbr[width])
 		width++;
 	ft_free_tab(nbr);
-	return (width - 1);
+	return (width);
 }
 
 void	find_height_width(t_fdf *var, int fd)
