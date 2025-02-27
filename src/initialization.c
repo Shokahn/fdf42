@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:48:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/26 19:04:53 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/27 19:12:37 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ t_map	*map_init(void)
 		return (NULL);
 	map->height = 0;
 	map->width = 0;
+	map->max_z = 0;
+	map->min_z = 0;
 	map->coord = NULL;
 	map->x_d = 0;
 	map->y_d = 0;
@@ -89,7 +91,6 @@ void	initialization(t_fdf **var)
 		return ;
 	(*var)->mlx_p = 0;
 	(*var)->win_p = 0;
-	(*var)->i = 0;
 	(*var)->map = map_init();
 	(*var)->img = img_init();
 	if (!(*var)->map)

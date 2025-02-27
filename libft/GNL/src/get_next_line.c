@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:15:14 by stdevis           #+#    #+#             */
-/*   Updated: 2025/01/23 14:50:07 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/27 17:05:47 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*get_next_line(int fd)
 	if (!line)
 		return (NULL);
 	rest = create_rest(line);
-	if (!rest)
+	if (!rest || rest[0] == '\0')
 		gnl_ft_free(&rest);
 	return (line);
 }

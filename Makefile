@@ -6,7 +6,7 @@
 #    By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/04 15:05:03 by stdevis           #+#    #+#              #
-#    Updated: 2025/02/22 13:04:07 by stdevis          ###   ########.fr        #
+#    Updated: 2025/02/27 17:55:16 by stdevis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ TEST = main.c
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 OBJ_TEST = $(addprefix $(OBJ_TEST_DIR), $(TEST:%.c=%.o))
 
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -O3
 MiniLibX_Flags = -lXext -lX11
 FSANITIZE = -fsanitize=address
 MAKE = make --no-print-directory

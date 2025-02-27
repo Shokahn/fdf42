@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 13:12:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/26 15:37:38 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/27 16:55:51 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #  define MAX_FD 10239
 # endif
 
+# include "libft.h"
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>

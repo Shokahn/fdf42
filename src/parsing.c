@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:35:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/26 15:52:42 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/27 19:14:15 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,23 @@ void	find_height_width(t_fdf *var, int fd)
 		var->map->height++;
 		free(line);
 	}
-	line = get_next_line(fd); // pansement
 	close(fd);
 }
 
-void	fill_the_coord(char **nbr, t_map *map, int y)
+void	fill_the_coord(char **split, t_map *map, int y)
 {
 	int	x;
-
+	int nbr;
+	
 	x = 0;
-	while (nbr[x] && x < map->width)
+	while (split[x] && x < map->width)
 	{
-		map->coord[y][x].z = ft_atoi(nbr[x]);
+		nbr = ft_atoi(split[x]);
+		map->coord[y][x].z = nbr;
+		if (map->max_z < nbr)
+			map->max_z = nbr;
+		if (map->min_z > nbr)
+			map->min_z = nbr;
 		x++;
 	}
 }
@@ -63,7 +68,7 @@ void	open_to_fill(int fd, t_fdf *var)
 {
 	int		y;
 	char	*line;
-	char	**nbr;
+	char	**split;
 
 	y = 0;
 	while (y < var->map->height)
@@ -71,12 +76,12 @@ void	open_to_fill(int fd, t_fdf *var)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		nbr = ft_split(line, ' ');
-		if (!nbr)
+		split = ft_split(line, ' ');
+		if (!split)
 			ft_free_error("split for coord2 failed\n", 0, var);
-		fill_the_coord(nbr, var->map, y);
+		fill_the_coord(split, var->map, y);
 		free(line);
-		ft_free_tab(nbr);
+		ft_free_tab(split);
 		y++;
 	}
 	close(fd);
@@ -94,6 +99,7 @@ void	map_read(t_fdf *var, char *map_name)
 	if (fd == -1)
 		ft_free_error("map open failed\n", 1, var);
 	var->map->coord = coord_init(var->map->height, var->map->width, var);
-	ft_printf("height = %d, width = %d\n", var->map->height, var->map->width);
+	printf("height = %d, width = %d\n", var->map->height, var->map->width);
 	open_to_fill(fd, var);
+	printf("max z = %f, min z = %f\n", var->map->max_z, var->map->min_z);
 }

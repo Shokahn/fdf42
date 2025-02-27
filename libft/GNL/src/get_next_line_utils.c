@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 14:51:24 by stdevis           #+#    #+#             */
-/*   Updated: 2025/01/23 14:49:51 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/27 16:30:23 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*gnl_ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	len1 = gnl_ft_strlen(s1);
 	len2 = gnl_ft_strlen(s2);
-	str_join = malloc(sizeof(char) * len1 + len2 + 1);
+	str_join = malloc(sizeof(char) * (len1 + len2 + 1));
 	if (!str_join)
 		return (NULL);
 	i = 0;

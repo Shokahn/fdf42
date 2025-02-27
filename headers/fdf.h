@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/26 19:05:07 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/02/27 19:12:31 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define DEPLACEMENT 20
 # define ZOOM 2
 # define COLOR 0x33ff99
+# define K 2
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
@@ -52,6 +53,8 @@ typedef struct s_map
 	int		height;
 	int		width;
 	int		p;
+	float	max_z;
+	float	min_z;
 	t_coord	**coord;
 	float	x_d;
 	float	y_d;
@@ -64,6 +67,8 @@ typedef struct s_map
 typedef struct s_image
 {
 	float	distance;
+	float	start_x;
+	float	star_y;
 	void	*img_p;
 	char	*addr;
 	int		bpp;
@@ -75,7 +80,6 @@ typedef struct s_image
 
 typedef struct s_fdf
 {
-	int		i;
 	void	*win_p;
 	void	*mlx_p;
 	t_map	*map;
@@ -103,7 +107,7 @@ void		clear_image(t_fdf *var);
 void		free_fdf(t_fdf *var);
 void		free_map(t_map *map);
 void		free_coord_index(t_coord **coord, int j);
-void		free_coord(t_coord **coord);
+void		free_coord(t_coord **coord, int width);
 
 // error
 

@@ -6,7 +6,7 @@
 #    By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 18:04:58 by stdevis           #+#    #+#              #
-#    Updated: 2025/01/23 14:39:43 by stdevis          ###   ########.fr        #
+#    Updated: 2025/02/27 17:07:28 by stdevis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC_DIR = src/
 CFLAGS = -Wall -Wextra -Werror
 OBJF = .cache_exists
 NAME = GNL.a
+
 
 GREEN = \033[32m
 YELLOW = \033[33m
@@ -46,6 +47,7 @@ $(NAME): $(OBJ)
 	@ar rcs $(NAME) $(OBJ)
 	@echo ""
 	@echo "	📚 $(BLUE)SUCCESS: $(NAME) has been created$(RESET) 📚 "
+
 
 clean:
 	@echo "💾 $(YELLOW)Cleaning GNL object files$(RESET)"
