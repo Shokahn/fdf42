@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/27 19:12:31 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/01 16:03:42 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,22 @@
 # include "../libft/headers/ft_printf.h"
 # include "../libft/headers/get_next_line.h"
 # include "../libft/headers/libft.h"
-# include "../minilibx-linux/mlx.h"
-# include "../minilibx-linux/mlx_int.h"
+# include "../minilibx_macos/mlx.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
 
 # define HEIGHT 1800
 # define WIGHT 1500
 # define RADIUS_Z 0.8
-# define RADIUS_SCALE 0.02
-# define DISTANCE 5
+# define SCALING 0.5
+# define DISTANCE 20
 # define DEPLACEMENT 20
 # define ZOOM 2
 # define COLOR 0x33ff99
@@ -45,6 +47,7 @@ typedef struct s_coord
 	float	x;
 	float	y;
 	float	z;
+	int		true_zero;
 	int		color;
 }			t_coord;
 

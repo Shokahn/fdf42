@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:35:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/27 19:14:15 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/01 16:05:34 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	fill_the_coord(char **split, t_map *map, int y)
 	while (split[x] && x < map->width)
 	{
 		nbr = ft_atoi(split[x]);
+		if (nbr == 0)
+			map->coord[y][x].true_zero = 1;
 		map->coord[y][x].z = nbr;
 		if (map->max_z < nbr)
 			map->max_z = nbr;

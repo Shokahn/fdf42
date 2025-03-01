@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:13:15 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/27 19:26:20 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/01 16:10:18 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,36 +34,62 @@ int	closer(t_fdf *var)
 	ft_printf("the ESC key or red cross has been pressed\n");
 	mlx_destroy_image(var->mlx_p, var->img->img_p);
 	mlx_destroy_window(var->mlx_p, var->win_p);
-	mlx_destroy_display(var->mlx_p);
+	//mlx_destroy_display(var->mlx_p);
 	ft_free_error("end of the programme\n", 0, var);
 	exit(0);
 }
 
 void	scaling_down(t_fdf *var)
 {
+	int x;
+	int y;
+
+	y = 0;
 	clear_image(var);
-	var->map->radius -= RADIUS_SCALE;
-	var->map->max_z -= RADIUS_SCALE;
-	var->map->min_z += RADIUS_SCALE;
-	if (var->map->max_z < var->map->min_z)
-		ft_swap_float(&var->map->max_z, &var->map->min_z);
+	while(y < var->map->height)
+	{
+		x = 0;
+		while( x < var->map->width)
+		{
+			if (var->map->coord[y][x].true_zero == 0)
+				var->map->coord[y][x].z -= SCALING;
+			x++;	
+		}
+		y++;
+	}
+	if (var->map->max_z != 0)
+		var->map->max_z -= SCALING;
+	if (var->map->min_z != 0)
+		var->map->min_z -= SCALING;
 	put_the_grid(var, var->map);
 	mlx_put_image_to_window(var->mlx_p, var->win_p, var->img->img_p, 0, 0);
-	printf("Scaling down for %f coord Z\n", var->map->radius);
 	printf("max_z = %f, min_z = %f\n", var->map->max_z, var->map->min_z);
 }
 
 void	scaling_up(t_fdf *var)
 {
+	int x;
+	int y;
+
+	y = 0;
 	clear_image(var);
-	var->map->radius += RADIUS_SCALE;
-	var->map->max_z += RADIUS_SCALE;
-	var->map->min_z -= RADIUS_SCALE;
-	if (var->map->max_z < var->map->min_z)
-		ft_swap_float(&var->map->max_z, &var->map->min_z);
+	while(y < var->map->height)
+	{
+		x = 0;
+		while( x < var->map->width)
+		{
+			if (var->map->coord[y][x].true_zero == 0)
+				var->map->coord[y][x].z += SCALING;
+			x++;	
+		}
+		y++;
+	}
+	if (var->map->max_z != 0)
+		var->map->max_z += SCALING;
+	if (var->map->min_z != 0)
+		var->map->min_z += SCALING;
 	put_the_grid(var, var->map);
 	mlx_put_image_to_window(var->mlx_p, var->win_p, var->img->img_p, 0, 0);
-	printf("Scaling up for %f coord Z\n", var->map->radius);
 	printf("max_z = %f, min_z = %f\n", var->map->max_z, var->map->min_z);
 }
 
@@ -105,25 +131,25 @@ void	reset_without_projection(t_fdf *var)
 
 int	key_hook(int keycode, t_fdf *var)
 {
-	if (keycode == XK_Escape)
+	if (keycode == 53)
 		closer(var);
-	if (keycode == XK_Up)
+	if (keycode == 126)
 		going_up(var);
-	if (keycode == XK_Down)
+	if (keycode == 125)
 		going_down(var);
-	if (keycode == XK_Left)
+	if (keycode == 123)
 		going_left(var);
-	if (keycode == XK_Right)
+	if (keycode == 124)
 		going_right(var);
-	if (keycode == XK_w)
+	if (keycode == 13)
 		scaling_up(var);
-	if (keycode == XK_s)
+	if (keycode == 1)
 		scaling_down(var);
-	if (keycode == XK_r)
+	if (keycode == 15)
 		reset(var);
-	if (keycode == XK_p)
+	if (keycode == 35)
 		projection_change(var);
-	if (keycode == XK_t)
+	if (keycode == 17)
 		reset_without_projection(var);
 	return (0);
 }
@@ -141,7 +167,7 @@ void	wind_init(t_fdf *var)
 	var->win_p = mlx_new_window(var->mlx_p, WIGHT, HEIGHT, "fdf");
 	if (!var->win_p)
 	{
-		mlx_destroy_display(var->mlx_p);
+		//mlx_destroy_display(var->mlx_p);
 		ft_free_error("destroy wind failed\n", 0, var);
 	}
 	var->img->img_p = mlx_new_image(var->mlx_p, WIGHT, HEIGHT);
@@ -151,7 +177,7 @@ void	wind_destruction(t_fdf *var)
 {
 	mlx_destroy_image(var->mlx_p, var->img->img_p);
 	mlx_destroy_window(var->mlx_p, var->win_p);
-	mlx_destroy_display(var->mlx_p);
+	//mlx_destroy_display(var->mlx_p);
 	free(var->mlx_p);
 	free_fdf(var);
 }

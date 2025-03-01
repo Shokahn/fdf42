@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:48:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/27 19:12:37 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/01 16:04:36 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_coord	**coord_init(int height, int width, t_fdf *var)
 			coord[y][x].y = y;
 			coord[y][x].z = 0;
 			coord[y][x].color = COLOR;
+			coord[y][x].true_zero = 0;
 			x++;
 		}
 		y++;
