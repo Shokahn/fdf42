@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:35:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/01 16:05:34 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/04 14:54:56 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void	fill_the_coord(char **split, t_map *map, int y)
 	while (split[x] && x < map->width)
 	{
 		nbr = ft_atoi(split[x]);
-		if (nbr == 0)
-			map->coord[y][x].true_zero = 1;
 		map->coord[y][x].z = nbr;
 		if (map->max_z < nbr)
 			map->max_z = nbr;
@@ -89,6 +87,23 @@ void	open_to_fill(int fd, t_fdf *var)
 	close(fd);
 }
 
+void	calculate_offset(t_fdf *var)
+{
+	int map_center_x; 
+	int map_center_y; 
+	int win_center_x; 
+    int win_center_y;
+		
+	map_center_x = ((var->map->width - 1) / 2) * var->img->distance;
+	map_center_y = (var->map->height / 2) * var->img->distance;
+
+	win_center_x = WIGHT / 2;
+	win_center_y = HEIGHT / 2;
+
+    var->img->offset_x = win_center_x - map_center_x;
+    var->img->offset_y = win_center_y - map_center_y;
+}
+
 void	map_read(t_fdf *var, char *map_name)
 {
 	int	fd;
@@ -103,5 +118,6 @@ void	map_read(t_fdf *var, char *map_name)
 	var->map->coord = coord_init(var->map->height, var->map->width, var);
 	printf("height = %d, width = %d\n", var->map->height, var->map->width);
 	open_to_fill(fd, var);
+	calculate_offset(var);
 	printf("max z = %f, min z = %f\n", var->map->max_z, var->map->min_z);
 }

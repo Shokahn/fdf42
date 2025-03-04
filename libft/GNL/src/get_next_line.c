@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:15:14 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/27 17:05:47 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/04 14:13:02 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	gnl_ft_free(char **str)
 		return ;
 	free(*str);
 	*str = NULL;
+	str = NULL;
 }
 
 char	*create_rest(char *line)

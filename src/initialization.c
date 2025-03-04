@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
+/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:48:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/01 16:04:36 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/04 14:34:54 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_coord	**coord_init(int height, int width, t_fdf *var)
 			coord[y][x].y = y;
 			coord[y][x].z = 0;
 			coord[y][x].color = COLOR;
-			coord[y][x].true_zero = 0;
 			x++;
 		}
 		y++;
@@ -54,8 +53,8 @@ t_map	*map_init(void)
 		return (NULL);
 	map->height = 0;
 	map->width = 0;
-	map->max_z = 0;
-	map->min_z = 0;
+	map->max_z = FLT_MIN;
+	map->min_z = FLT_MAX;
 	map->coord = NULL;
 	map->x_d = 0;
 	map->y_d = 0;
@@ -80,6 +79,8 @@ t_image	*img_init(void)
 	img->img_p = NULL;
 	img->line_lenght = 0;
 	img->distance = DISTANCE;
+	img->offset_x = 0;
+	img->offset_y = 0;
 	img->x = 0;
 	img->y = 0;
 	return (img);
