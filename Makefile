@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+         #
+#    By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/04 15:05:03 by stdevis           #+#    #+#              #
-#    Updated: 2025/02/27 17:55:16 by stdevis          ###   ########.fr        #
+#    Updated: 2025/03/04 17:05:58 by shokahn          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,8 @@ NAME = fdf
 NAME_TEST = fdf_test
 OBJ_DIR = obj/
 SRC_DIR = src/
-OBJ_TEST_DIR = test/obj/
-SRC_TEST_DIR = test/
 
-SRC = error.c free.c initialization.c main.c print.c parsing.c translate.c
-TEST = main.c
+SRC = error.c free.c initialization.c main.c print.c parsing.c translate.c rotate.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 OBJ_TEST = $(addprefix $(OBJ_TEST_DIR), $(TEST:%.c=%.o))
@@ -98,16 +95,6 @@ $(PRINTF):
 	@echo "		⚙ $(UNDERLINE)$(BOLD)Building printf$(RESET) ⚙"
 	@echo ""
 	@$(MAKE) -C $(PRINTF_DIR)
-	@echo ""
-
-test: $(NAME_TEST) 
-
-$(NAME_TEST): $(LIBFT) $(PRINTF) $(GNL) $(MINI_LIBX) $(OBJ_TEST)
-	@echo ""
-	@echo "		🚀 $(BOLD)$(YELLOW)Linking $(NAME_TEST)...$(RESET)"
-	@cc $(CFLAGS) $(OBJ_TEST) -o $(NAME_TEST) $(All_L) $(All_l) $(MiniLibX_Flags)
-	@echo ""
-	@echo "	🎉 $(BOLD)$(GREEN)SUCCESS: $(NAME_TEST) has been created$(RESET) ✅ "
 	@echo ""
 
 clean:

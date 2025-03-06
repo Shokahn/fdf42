@@ -6,7 +6,7 @@
 /*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/04 14:50:19 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/03/06 14:07:55 by shokahn          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,8 @@
 # define RADIUS_Z 0.8
 # define RADIUS_SCALE 0.02
 # define SCALING 0.5
-# define DISTANCE 1
 # define DEPLACEMENT 20
 # define ZOOM 2
-# define COLOR 0x33ff99
-# define K 2
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
@@ -50,6 +47,12 @@ typedef struct s_coord
 	int		color;
 }			t_coord;
 
+typedef struct s_color
+{
+	int start;
+	int end;
+}			t_color;
+
 typedef struct s_map
 {
 	int		height;
@@ -58,12 +61,15 @@ typedef struct s_map
 	float	max_z;
 	float	min_z;
 	t_coord	**coord;
+	int		color_check;
+	t_color	*color;
 	float	x_d;
 	float	y_d;
 	float	z_d;
 	float	radius;
 	int		x_index;
 	int		y_index;
+	float	true_z;
 }			t_map;
 
 typedef struct s_image
@@ -71,6 +77,9 @@ typedef struct s_image
 	float	distance;
 	float	offset_x;
 	float	offset_y;
+	float	rotation_x;
+	float	rotation_y;
+	float	rotation_z;
 	void	*img_p;
 	char	*addr;
 	int		bpp;
@@ -79,6 +88,7 @@ typedef struct s_image
 	int x; // deplacement
 	int		y;
 }			t_image;
+
 
 typedef struct s_fdf
 {
@@ -98,6 +108,7 @@ t_coord		*point_init(int x, int y, int z, int color);
 // parsing
 
 void		map_read(t_fdf *var, char *map_name);
+void	calculate_distance(t_fdf *var);
 
 //  put_the_image
 
@@ -124,9 +135,13 @@ void		print_tab(char **nbr);
 
 // translation
 
-void		going_up(t_fdf *var);
-void		going_down(t_fdf *var);
-void		going_left(t_fdf *var);
-void		going_right(t_fdf *var);
+void		translate(int keycode, t_fdf *var);
+
+// rotate
+
+void	rotate(int keycode, t_fdf *var);
+void	applicate_rotation(t_fdf *var, float *x, float*y, float *z);
+
+void	ft_draw_instructions(t_fdf *var);
 
 #endif
