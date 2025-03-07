@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:25:42 by shokahn           #+#    #+#             */
-/*   Updated: 2025/03/06 15:19:32 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/03/07 19:06:18 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,33 @@ static void	rotate_z(float *x, float *y, double z_angle)
 	*y = prev.x * sin(z_angle) + prev.y * cos(z_angle);
 }
 
-void	applicate_rotation(t_fdf *var, float *x, float*y, float *z)
+void	applicate_rotation(t_fdf *var, float *x, float *y, float *z)
 {
-	double angle;
+	double	angle;
+	float	center_x;
+	float	center_y;
+	float	center_z;
+	t_coord	original;
 
 	angle = 0.0872665;
+	center_x = (var->map->width - 1) * (var->img->distance / 2);
+	center_y = (var->map->height - 1) * (var->img->distance / 2);
+	center_z = (var->map->max_z + var->map->min_z) / 2;
+	original.x = *x - center_x;
+	original.y = *y - center_y;
+	original.z = *z - center_z;
 	if (var->img->rotation_x != 0)
-		rotate_x(y, z, (var->img->rotation_x * angle));
+		rotate_x(&original.y, &original.z, (var->img->rotation_x * angle));
 	if (var->img->rotation_y != 0)
-		rotate_y(x, z, (var->img->rotation_y * angle));	
+		rotate_y(&original.x, &original.z, (var->img->rotation_y * angle));
 	if (var->img->rotation_z != 0)
-		rotate_z(x, y, (var->img->rotation_z * angle));
-
+		rotate_z(&original.x, &original.y, (var->img->rotation_z * angle));
+	*x = original.x + center_x;
+	*y = original.y + center_y;
+	*z = original.z + center_z;
 }
 
-
- void	rotate(int keycode, t_fdf *var)
+void	rotate(int keycode, t_fdf *var)
 {
 	clear_image(var);
 	if (keycode == XK_1)

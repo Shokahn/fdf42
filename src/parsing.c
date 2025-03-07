@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:35:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/06 15:08:06 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/03/07 19:25:09 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	find_height_width(t_fdf *var, int fd)
 void	fill_the_coord(char **split, t_map *map, int y)
 {
 	int	x;
-	int nbr;
-	
+	int	nbr;
+
 	x = 0;
 	while (split[x] && x < map->width)
 	{
@@ -87,41 +87,6 @@ void	open_to_fill(int fd, t_fdf *var)
 	close(fd);
 }
 
-void	calculate_offset(t_fdf *var)
-{
-	int map_center_x; 
-	int map_center_y; 
-	int win_center_x; 
-    int win_center_y;
-		
-	map_center_x = ((var->map->width - 1) / 2) * var->img->distance;
-	map_center_y = ((var->map->height) / 2) * var->img->distance;
-	
-	win_center_x = WIGHT / 2;
-	win_center_y = HEIGHT / 2;
-
-    var->img->offset_x = win_center_x - map_center_x;
-    var->img->offset_y = win_center_y - map_center_y;
-	printf("offset x = %f, offset y = %f\n", var->img->offset_x, var->img->offset_y);
-}
-
-void	calculate_distance(t_fdf *var)
-{
-	int	distance_x;
-	int	distance_y;
-	
-	distance_x = 0;
-	distance_y = 0;
-	while (var->map->width * distance_x < WIGHT - 500)
-		distance_x++;
-	while (var->map->height * distance_y < HEIGHT - 500)
-		distance_y++;
-	if (distance_x < distance_y)
-		var->img->distance = distance_x;
-	else
-		var->img->distance = distance_y;
-}
-
 void	map_read(t_fdf *var, char *map_name)
 {
 	int	fd;
@@ -133,10 +98,9 @@ void	map_read(t_fdf *var, char *map_name)
 	fd = open(map_name, O_RDONLY);
 	if (fd == -1)
 		ft_free_error("map open failed\n", 1, var);
-	var->map->coord = coord_init(var->map->height, var->map->width, var);
 	printf("height = %d, width = %d\n", var->map->height, var->map->width);
+	var->map->coord = coord_init(var->map->height, var->map->width, var);
 	open_to_fill(fd, var);
-	calculate_offset(var);
 	calculate_distance(var);
 	printf("distance = %f\n", var->img->distance);
 	printf("max z = %f, min z = %f\n", var->map->max_z, var->map->min_z);

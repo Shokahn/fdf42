@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:28:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/02/27 17:59:56 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/07 19:12:13 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	free_coord(t_coord **coord, int height)
 	i = 0;
 	while (i < height)
 	{
-        if (coord[i])
-		    free(coord[i]);
+		if (coord[i])
+			free(coord[i]);
 		i++;
 	}
 	free(coord);
@@ -33,6 +33,7 @@ void	free_map(t_map *map)
 	if (!map)
 		return ;
 	free_coord(map->coord, map->height);
+	free(map->color);
 	free(map);
 }
 

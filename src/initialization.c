@@ -3,50 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:48:47 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/06 14:08:18 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/03/07 19:11:53 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/fdf.h"
 
-t_coord	**coord_init(int height, int width, t_fdf *var)
+t_color	*color_init(void)
 {
-	int		y;
-	int		x;
-	t_coord	**coord;
-
-	y = 0;
-	coord = malloc(sizeof(t_coord *) * height);
-	if (!coord)
-		ft_free_error("malloc coord failed\n", 0, var);
-	while (y < height)
-	{
-		coord[y] = malloc(sizeof(t_coord) * width);
-		if (!coord[y])
-		{
-			free_coord_index(coord, y);
-			ft_free_error("malloc coord[i] failed\n", 0, var);
-		}
-		x = 0;
-		while (x < width)
-		{
-			coord[y][x].x = x;
-			coord[y][x].y = y;
-			coord[y][x].z = 0;
-			coord[y][x].color = 0;
-			x++;
-		}
-		y++;
-	}
-	return (coord);
-}
-
-t_color *color_init(void)
-{
-	t_color *color;
+	t_color	*color;
 
 	color = malloc(sizeof(t_color));
 	if (!color)
@@ -71,16 +39,15 @@ t_map	*map_init(void)
 	map->x_d = 0;
 	map->y_d = 0;
 	map->z_d = 0;
-    map->x_index = 0;
-    map->y_index = 0;
-    map->p = 0;
-    map->radius = RADIUS_Z;
+	map->x_index = 0;
+	map->y_index = 0;
+	map->p = 0;
+	map->radius = RADIUS_Z;
 	map->true_z = 0;
 	map->color = color_init();
 	map->color_check = 0;
 	return (map);
 }
-
 
 t_image	*img_init(void)
 {
@@ -102,6 +69,8 @@ t_image	*img_init(void)
 	img->rotation_z = 0;
 	img->x = 0;
 	img->y = 0;
+	img->height_menu = 0;
+	img->width_menu = 0;
 	return (img);
 }
 
@@ -122,7 +91,7 @@ void	initialization(t_fdf **var)
 
 t_coord	*point_init(int x, int y, int z, int color)
 {
-	t_coord *point;
+	t_coord	*point;
 
 	point = malloc(sizeof(t_coord));
 	if (!point)

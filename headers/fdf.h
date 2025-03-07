@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+        */
+/*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/06 14:07:55 by shokahn          ###   ########.fr       */
+/*   Updated: 2025/03/07 18:25:50 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # include <string.h>
 # include <unistd.h>
 
-# define HEIGHT 800
-# define WIGHT 800
+# define HEIGHT 1800
+# define WIGHT 1800
 # define RADIUS_Z 0.8
 # define RADIUS_SCALE 0.02
 # define SCALING 0.5
@@ -49,8 +49,8 @@ typedef struct s_coord
 
 typedef struct s_color
 {
-	int start;
-	int end;
+	int		start;
+	int		end;
 }			t_color;
 
 typedef struct s_map
@@ -80,6 +80,8 @@ typedef struct s_image
 	float	rotation_x;
 	float	rotation_y;
 	float	rotation_z;
+	int		width_menu;
+	int		height_menu;
 	void	*img_p;
 	char	*addr;
 	int		bpp;
@@ -88,7 +90,6 @@ typedef struct s_image
 	int x; // deplacement
 	int		y;
 }			t_image;
-
 
 typedef struct s_fdf
 {
@@ -108,12 +109,19 @@ t_coord		*point_init(int x, int y, int z, int color);
 // parsing
 
 void		map_read(t_fdf *var, char *map_name);
-void	calculate_distance(t_fdf *var);
+void		calculate_distance(t_fdf *var);
 
 //  put_the_image
 
 void		put_the_grid(t_fdf *var, t_map *map);
 void		clear_image(t_fdf *var);
+
+// draw
+
+void		put_pixel(t_image *img, int x_d, int y_d, t_map *map);
+void		draw_line_h(int dx, int dy, t_fdf *var, t_coord *tmp);
+void		draw_line_v(int dx, int dy, t_fdf *var, t_coord *tmp);
+void		draw_line(t_fdf *var, t_coord *next);
 
 // free
 
@@ -139,9 +147,48 @@ void		translate(int keycode, t_fdf *var);
 
 // rotate
 
-void	rotate(int keycode, t_fdf *var);
-void	applicate_rotation(t_fdf *var, float *x, float*y, float *z);
+void		rotate(int keycode, t_fdf *var);
+void		applicate_rotation(t_fdf *var, float *x, float *y, float *z);
 
-void	ft_draw_instructions(t_fdf *var);
+// scaling+zoom
+
+void		zoom_in(t_fdf *var);
+void		zoom_out(t_fdf *var);
+void		scaling_down(t_fdf *var);
+void		scaling_up(t_fdf *var);
+
+// color
+
+int			rgb_color(int color1, int color2, float ratio);
+void		get_color_start_end(t_map *map, int *color_start, int *color_end);
+int			get_color(t_map *map);
+
+// win
+
+void		wind_init(t_fdf *var);
+int			closer(t_fdf *var);
+void		wind_destruction(t_fdf *var);
+
+// key
+
+int			key_hook(int keycode, t_fdf *var);
+void		change_color(t_fdf *var);
+void		reset_without_projection(t_fdf *var);
+void		projection_change(t_fdf *var);
+void		reset(t_fdf *var);
+
+// utils
+
+void		clear_image(t_fdf *var);
+void		ft_swap_float(float *x, float *y);
+void		ft_draw_instructions(t_fdf *var);
+void		calculate_distance(t_fdf *var);
+int			mouse_hook(int keycode, int x, int y, t_fdf *var);
+
+// projection 
+
+void	chose_projection(t_fdf *var, float *x, float *y, float z);
+void	perspective_transform(float *x, float *y, float z, t_fdf *var);
+void	isometric_transform(float *x, float *y, float z);
 
 #endif

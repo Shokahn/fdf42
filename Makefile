@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: shokahn <shokahn@student.42.fr>            +#+  +:+       +#+         #
+#    By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/04 15:05:03 by stdevis           #+#    #+#              #
-#    Updated: 2025/03/04 17:05:58 by shokahn          ###   ########.fr        #
+#    Updated: 2025/03/07 18:22:09 by stdevis          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,9 @@ NAME_TEST = fdf_test
 OBJ_DIR = obj/
 SRC_DIR = src/
 
-SRC = error.c free.c initialization.c main.c print.c parsing.c translate.c rotate.c
+SRC = error.c free.c initialization.c main.c print.c parsing.c translate.c rotate.c \
+	  scaling+zoom.c color.c draw.c initialization2.c key_handle.c projection.c utils.c \
+	  windows.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
 OBJ_TEST = $(addprefix $(OBJ_TEST_DIR), $(TEST:%.c=%.o))
