@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/07 18:25:50 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/07 19:43:29 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include "../minilibx-linux/mlx.h"
 # include "../minilibx-linux/mlx_int.h"
 # include <fcntl.h>
-# include <float.h>
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -36,8 +35,6 @@
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
-# define TEST ft_printf(BOLD GREEN "TEST\n\n" RESET)
-# define TEST2 ft_printf(BOLD RED "TEST\n\n" RESET)
 
 typedef struct s_coord
 {
@@ -87,7 +84,7 @@ typedef struct s_image
 	int		bpp;
 	int		line_lenght;
 	int		endian;
-	int x; // deplacement
+	int		x;
 	int		y;
 }			t_image;
 
@@ -185,10 +182,10 @@ void		ft_draw_instructions(t_fdf *var);
 void		calculate_distance(t_fdf *var);
 int			mouse_hook(int keycode, int x, int y, t_fdf *var);
 
-// projection 
+// projection
 
-void	chose_projection(t_fdf *var, float *x, float *y, float z);
-void	perspective_transform(float *x, float *y, float z, t_fdf *var);
-void	isometric_transform(float *x, float *y, float z);
+void		chose_projection(t_fdf *var, float *x, float *y, float z);
+void		perspective_transform(float *x, float *y, float z, t_fdf *var);
+void		isometric_transform(float *x, float *y, float z);
 
 #endif
