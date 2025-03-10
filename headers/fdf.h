@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 15:15:34 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/07 19:43:29 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/10 14:26:31 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include "../libft/headers/libft.h"
 # include "../minilibx-linux/mlx.h"
 # include "../minilibx-linux/mlx_int.h"
-# include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -35,6 +34,8 @@
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
+# define FLT_MAX 3.402823466e+38F
+# define FLT_MIN 1.175494351e-38F
 
 typedef struct s_coord
 {

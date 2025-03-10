@@ -6,7 +6,7 @@
 /*   By: stdevis <stdevis@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:35:55 by stdevis           #+#    #+#             */
-/*   Updated: 2025/03/07 19:25:09 by stdevis          ###   ########.fr       */
+/*   Updated: 2025/03/10 14:28:55 by stdevis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,7 @@ void	map_read(t_fdf *var, char *map_name)
 	fd = open(map_name, O_RDONLY);
 	if (fd == -1)
 		ft_free_error("map open failed\n", 1, var);
-	printf("height = %d, width = %d\n", var->map->height, var->map->width);
 	var->map->coord = coord_init(var->map->height, var->map->width, var);
 	open_to_fill(fd, var);
 	calculate_distance(var);
-	printf("distance = %f\n", var->img->distance);
-	printf("max z = %f, min z = %f\n", var->map->max_z, var->map->min_z);
 }
